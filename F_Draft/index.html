@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易画图软件</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <div class="tool-group">
+                <h3>画笔工具</h3>
+                <button id="pencil" class="tool-btn active" data-tool="pencil">铅笔</button>
+                <button id="eraser" class="tool-btn" data-tool="eraser">橡皮擦</button>
+                <button id="clear" class="tool-btn danger">清除画布</button>
+            </div>
+            
+            <div class="tool-group">
+                <h3>画笔设置</h3>
+                <div class="color-picker">
+                    <label>颜色:</label>
+                    <input type="color" id="color" value="#000000">
+                </div>
+                <div class="size-picker">
+                    <label>粗细:</label>
+                    <input type="range" id="size" min="1" max="50" value="5">
+                    <span id="size-value">5px</span>
+                </div>
+            </div>
+            
+            <div class="tool-group">
+                <h3>画布设置</h3>
+                <div class="size-picker">
+                    <label>宽度:</label>
+                    <input type="number" id="canvas-width" min="100" max="2000" value="800">
+                    <span>px</span>
+                </div>
+                <div class="size-picker">
+                    <label>高度:</label>
+                    <input type="number" id="canvas-height" min="100" max="2000" value="600">
+                    <span>px</span>
+                </div>
+                <button id="resize-canvas" class="tool-btn">应用尺寸</button>
+                <button id="reset-canvas" class="tool-btn">重置尺寸</button>
+            </div>
+            
+            <div class="tool-group">
+                <h3>边框拉伸</h3>
+                <div class="resize-info">
+                    <p>拖拽画布右下角边框调整大小</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <canvas id="drawing-canvas" width="800" height="600"></canvas>
+                <div class="resize-handle"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
