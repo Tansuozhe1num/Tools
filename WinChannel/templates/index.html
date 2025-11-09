@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>梦始 - WinChannel</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>梦始 - WinChannel</h1>
+    <div class="urls">
+      <span id="local-url"></span>
+      <span id="network-url"></span>
+    </div>
+  </header>
+
+  <section id="auth-section" class="panel">
+    <h2>用户登录</h2>
+    <div class="auth-row">
+      <input id="auth-username" type="text" placeholder="用户名" />
+      <input id="auth-password" type="password" placeholder="密码" />
+      <button id="btn-register">注册</button>
+      <button id="btn-login">登录</button>
+      <button id="btn-logout" class="secondary">退出</button>
+    </div>
+    <div class="auth-status">状态：<span id="auth-status">未登录</span></div>
+    <p class="hint">管理员账户：用户名 <code>dreamstartooo</code>，密码 <code>123456</code></p>
+  </section>
+
+  <section id="crypto-section" class="panel">
+    <h2>端到端文本加密（可选）</h2>
+    <div class="crypto-row">
+      <input id="passphrase" type="text" placeholder="输入加密口令以开启" />
+      <span>加密状态：<strong id="enc-status">未开启</strong></span>
+    </div>
+  </section>
+
+  <section id="folder-section" class="panel">
+    <h2>文件夹上传</h2>
+    <div class="upload-row">
+      <input id="folder-input" type="file" webkitdirectory multiple />
+      <button id="upload-btn">上传文件夹</button>
+    </div>
+    <div class="upload-row">
+      <input id="zip-input" type="file" accept=".zip" />
+      <button id="upload-zip-btn">上传 ZIP 并解压</button>
+    </div>
+    <div class="admin-only">
+      <input id="new-folder-name" type="text" placeholder="新建文件夹名称（管理员）" />
+      <button id="create-folder-btn">新建文件夹</button>
+    </div>
+    <p id="folder-summary">未选择文件夹</p>
+    <ul id="uploads-list" class="list"></ul>
+  </section>
+
+  <section id="text-section" class="panel">
+    <h2>实时文本</h2>
+    <textarea id="text-editor" rows="10" placeholder="在此输入并实时同步……"></textarea>
+    <div class="text-meta">
+      <span>版本：<code id="text-version">0</code></span>
+      <span id="sync-status">就绪</span>
+    </div>
+    <h3>历史记录</h3>
+    <ul id="history-list" class="list"></ul>
+  </section>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

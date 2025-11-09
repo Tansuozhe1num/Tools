@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>梦始 - WinChannel · 登录</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="bg">
+  <header class="hero">
+    <div class="brand">
+      <span class="logo">🌙</span>
+      <h1>梦始 - WinChannel</h1>
+    </div>
+    <p class="subtitle">跨设备文件与文本传输 · 安全高效</p>
+  </header>
+
+  <main class="container">
+    <section class="card card-center" id="login-root">
+      <h2>登录 / 注册</h2>
+      <div class="form-row">
+        <input id="auth-username" type="text" placeholder="用户名" />
+        <input id="auth-password" type="password" placeholder="密码" />
+      </div>
+      <div class="actions">
+        <button id="btn-login" class="primary">登录</button>
+        <button id="btn-register" class="outline">注册</button>
+      </div>
+      <div class="note">
+        管理员：<code>dreamstartooo</code> / <code>123456</code>
+      </div>
+      <div class="status">状态：<span id="auth-status">未登录</span></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="local-url"></span>
+    <span id="network-url"></span>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

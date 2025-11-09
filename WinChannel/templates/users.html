@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>梦始 - WinChannel · 管理用户</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="bg">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🌙</span>
+      <h1>梦始 - WinChannel</h1>
+    </div>
+    <div class="userbox">
+      <span id="user-display">未登录</span>
+      <button id="btn-app" class="ghost">返回应用</button>
+      <button id="btn-logout" class="ghost">退出</button>
+    </div>
+  </header>
+
+  <main class="container" id="users-page">
+    <section class="card">
+      <h2>新增用户</h2>
+      <div class="row">
+        <input id="user-create-name" type="text" placeholder="用户名" />
+        <input id="user-create-pass" type="password" placeholder="初始密码" />
+        <button id="user-create-btn" class="primary">创建</button>
+      </div>
+      <div class="note">提示：管理员 <code>dreamstartooo</code> 不可被修改或删除。</div>
+    </section>
+
+    <section class="card">
+      <h2>用户列表</h2>
+      <table style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr style="text-align:left;">
+            <th style="padding:8px; border-bottom:1px solid var(--border);">用户名</th>
+            <th style="padding:8px; border-bottom:1px solid var(--border);">角色</th>
+            <th style="padding:8px; border-bottom:1px solid var(--border);">操作</th>
+          </tr>
+        </thead>
+        <tbody id="users-list"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="local-url"></span>
+    <span id="network-url"></span>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

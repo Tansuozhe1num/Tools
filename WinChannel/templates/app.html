@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>梦始 - WinChannel · 应用</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="bg">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🌙</span>
+      <h1>梦始 - WinChannel</h1>
+    </div>
+    <div class="userbox">
+      <span id="user-display">未登录</span>
+      <button id="btn-users" class="ghost admin-only">管理用户</button>
+      <button id="btn-logout" class="ghost">退出</button>
+    </div>
+  </header>
+
+  <main class="container grid">
+    <section class="card" id="file-card">
+      <h2>文件管理</h2>
+      <div class="row">
+        <input id="folder-input" type="file" webkitdirectory multiple />
+        <button id="upload-btn" class="primary">上传文件夹</button>
+      </div>
+      <div class="row">
+        <input id="zip-input" type="file" accept=".zip" />
+        <button id="upload-zip-btn" class="outline">上传 ZIP 并解压</button>
+      </div>
+      <div class="row admin-only">
+        <input id="new-folder-name" type="text" placeholder="新建文件夹名称（管理员）" />
+        <button id="create-folder-btn" class="ghost">新建文件夹</button>
+      </div>
+      <p id="folder-summary">未选择文件夹</p>
+      <ul id="uploads-list" class="list"></ul>
+    </section>
+
+    <section class="card" id="text-card">
+      <h2>文本协作</h2>
+      <textarea id="text-editor" rows="12" placeholder="在此输入并实时同步……"></textarea>
+      <div class="text-meta">
+        <span>版本：<code id="text-version">0</code></span>
+        <span id="sync-status">就绪</span>
+      </div>
+      <h3>历史记录</h3>
+      <ul id="history-list" class="list"></ul>
+    </section>
+
+    <section class="card" id="crypto-card">
+      <h2>端到端加密（可选）</h2>
+      <div class="row">
+        <input id="passphrase" type="text" placeholder="输入加密口令以开启" />
+        <span>加密状态：<strong id="enc-status">未开启</strong></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="local-url"></span>
+    <span id="network-url"></span>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

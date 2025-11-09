@@ -1,46 +1,36 @@
 # 梦始 - WinChannel
 
-一个跨设备文件与文本传输的本地 Web 工具，支持：
+一个跨设备文件与文本传输的本地 Web 工具（Go 后端），支持：
 
 - 文件夹传输：选择本地目录批量上传，保留结构；支持历史列表与一键 ZIP 下载。
 - ZIP 上传（移动端友好）：可直接上传 ZIP，后端自动解压并入库。
 - 文本传输：内置 TXT 编辑器，跨设备近实时同步（1s 轮询），记录版本与时间；支持可选端到端加密。
 - 局域网访问：同一网络的 iPhone、macOS、Windows 设备可通过浏览器访问。
+- 用户系统：普通用户可注册与登录；管理员可进行上传目录管理。
 
 ---
 
-## 快速开始
+## 快速开始（Go）
 
-1) 安装依赖（首次运行）：
+1) 启动服务：
 
-```
-pip install -r WinChannel/requirements.txt
-```
-
-2) 启动（推荐）：
-
-- Windows：双击 `WinChannel/launch.bat`（默认使用 Waitress 高可用模式）。
+- Windows：双击 `WinChannel/launch_go.bat`。
 - 或命令行：
 
 ```
 set PORT=8000
-set USE_WAITRESS=1
-python WinChannel/app.py
+go run WinChannel\main.go
 ```
 
-启动后终端显示 Local/Network URL；同网设备使用 Network URL 访问。
+终端会显示 Local 与 Network URL；同网设备使用 Network URL 访问。
 
-3) 可选：启用 HTTPS（自签）
-
-- 生成证书（示例，推荐使用 `mkcert` 在本机与设备上建立受信 CA）：
-- 将证书路径配置到环境变量，并关闭 Waitress：
+2) 可选：启用 HTTPS（自签或受信证书）
 
 ```
-set USE_WAITRESS=0
 set ENABLE_TLS=1
 set TLS_CERT=WinChannel\certs\server.crt
 set TLS_KEY=WinChannel\certs\server.key
-python WinChannel\app.py
+go run WinChannel\main.go
 ```
 
 ---
@@ -61,24 +51,13 @@ python WinChannel\app.py
 
 ---
 
-## 高可用与配置
+## 配置
 
-- 服务器：默认使用 Waitress（多线程）作为 WSGI，提升稳定性与并发处理能力；如需 HTTPS，切换为 Flask TLS 模式或置于 Caddy/Nginx 反向代理后启用 HTTPS。
-- 线程数：`THREADS` 环境变量（默认 8）。
-- 上传大小限制：`MAX_UPLOAD_SIZE_MB`（默认 512MB）。
 - 端口：`PORT`（默认 8000）。
+- 上传大小限制：`MAX_UPLOAD_SIZE_MB`（默认 512MB）。
+- HTTPS：`ENABLE_TLS=1` 并设置 `TLS_CERT` 与 `TLS_KEY`。
 
-示例（`launch.bat` 已内置）：
-
-```
-set PORT=8000
-set USE_WAITRESS=1
-set THREADS=8
-set MAX_UPLOAD_SIZE_MB=512
-python WinChannel/app.py
-```
-
-> 生产环境建议置于反向代理（如 Nginx）之后，并结合端口映射/NAT 或内网穿透进行公网访问。
+> 生产建议置于 Caddy/Nginx 反向代理，并启用 HTTP/2 与压缩。
 
 ---
 
@@ -86,32 +65,26 @@ python WinChannel/app.py
 
 - ZIP 解压使用路径校验，防止 Zip Slip（路径穿越）。
 - 文本支持端到端加密：在页面上输入相同口令后，以 AES-GCM 加密内容，服务器只存储密文。
-- 如需严格 HTTPS：
   - 局域网场景建议使用 `mkcert` 生成本地受信证书，并在各设备导入信任；
   - 公网场景建议使用 Caddy 自动签发证书或 Nginx + Let’s Encrypt。
 
----
+## 用户与管理员功能
 
-## Go 后端建议（可选）
-
-- 若追求更高吞吐与更低资源占用，可采用 Go（如 Gin/Fiber）实现后端，TLS 原生支持更完善。
-- 迁移路径：
-  - 复刻 REST API：`/api/upload`, `/api/upload_zip`, `/api/uploads`, `/api/download/:id`, `/api/text/*`；
-  - 静态与模板资源保持同路径；
-  - 启用 HTTP/2 + TLS，首选 Caddy 作为前端（自动证书与压缩）。
-  - 可在接入层做内容压缩与限速，提升稳定性。
-- 文件上传保留相对路径；不允许写到工作目录之外。
-- 历史记录采用追加写入，不包含用户内容，仅记录版本与时间。
+- 管理员账户：用户名 `dreamstartooo`，密码 `123456`。
+- 普通用户：可在页面通过“注册”创建账户并登录。
+- 登录后：
+  - 管理员可以删除任意上传目录（列表项右侧“删除上传”）以及在上传根目录新建文件夹。
+  - 普通用户仅进行上传与下载，不具备删除/新建权限。
 
 ---
 
 ## 目录结构
 
-- `WinChannel/app.py` 后端（Flask + Waitress）
+- `WinChannel/main.go` 后端（Go）
 - `WinChannel/templates/index.html` 前端页面
 - `WinChannel/static/style.css` 样式
 - `WinChannel/static/script.js` 前端逻辑
-- `WinChannel/storage/uploads/` 目录与 ZIP 存储（ZIP 会保留在对应上传目录下）
+- `WinChannel/storage/uploads/` 目录与 ZIP 存储（ZIP 保留在对应上传目录下）
 - `WinChannel/storage/text/` 文本内容与历史记录
 
 ---
@@ -126,6 +99,12 @@ python WinChannel/app.py
 - `GET /api/text/state` 获取当前文本与版本。
 - `POST /api/text/update` 更新文本并记录版本。
 - `GET /api/text/history?after_version=n` 拉取增量历史。
+- `POST /api/auth/register` 注册普通用户。
+- `POST /api/auth/login` 登录（管理员 `dreamstartooo/123456` 或普通用户）。
+- `POST /api/auth/logout` 退出登录。
+- `GET /api/auth/me` 获取当前登录状态。
+- `DELETE /api/admin/upload/:id` 管理员删除上传目录。
+- `POST /api/admin/folder/create` 管理员在上传根目录新建文件夹。
 
 ---
 
@@ -133,4 +112,4 @@ python WinChannel/app.py
 
 - iOS Safari 不能直接选文件夹？请先在“文件”App 中将文件夹压缩为 ZIP 后上传。
 - 上传中断或失败？请提高 `MAX_UPLOAD_SIZE_MB`，并检查网络稳定性。
-- 局域网访问不到？请确认设备在同一网络，并关闭系统防火墙的阻挡或为 Python 进程允许入站。
+- 局域网访问不到？请确认设备在同一网络，并关闭系统防火墙阻挡或允许进程入站。
